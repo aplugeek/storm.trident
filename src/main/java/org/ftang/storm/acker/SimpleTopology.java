@@ -1,4 +1,4 @@
-package org.ftang.storm;
+package org.ftang.storm.acker;
 
 import backtype.storm.Config;
 import backtype.storm.LocalCluster;
