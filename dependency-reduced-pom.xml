@@ -56,92 +56,12 @@
       <artifactId>junit</artifactId>
       <version>4.10</version>
       <scope>test</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>hamcrest-core</artifactId>
-          <groupId>org.hamcrest</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>storm</groupId>
       <artifactId>storm</artifactId>
       <version>0.8.1</version>
       <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>clojure</artifactId>
-          <groupId>org.clojure</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>commons-exec</artifactId>
-          <groupId>org.apache.commons</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>libthrift7</artifactId>
-          <groupId>storm</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>clj-time</artifactId>
-          <groupId>clj-time</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>curator-framework</artifactId>
-          <groupId>com.netflix.curator</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jzmq</artifactId>
-          <groupId>backtype</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>json-simple</artifactId>
-          <groupId>com.googlecode.json-simple</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>compojure</artifactId>
-          <groupId>compojure</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>hiccup</artifactId>
-          <groupId>hiccup</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>ring-jetty-adapter</artifactId>
-          <groupId>ring</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>tools.logging</artifactId>
-          <groupId>org.clojure</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>math.numeric-tower</artifactId>
-          <groupId>org.clojure</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>carbonite</artifactId>
-          <groupId>storm</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>snakeyaml</artifactId>
-          <groupId>org.yaml</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>httpclient</artifactId>
-          <groupId>org.apache.httpcomponents</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>tools.cli</artifactId>
-          <groupId>storm</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>disruptor</artifactId>
-          <groupId>com.googlecode.disruptor</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jgrapht</artifactId>
-          <groupId>storm</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
   </dependencies>
   <properties>
