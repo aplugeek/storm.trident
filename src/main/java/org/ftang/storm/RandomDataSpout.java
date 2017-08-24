@@ -17,7 +17,7 @@ import java.util.UUID;
  */
 public class RandomDataSpout extends BaseRichSpout {
 
-    private Log log = LogFactory.getLog(RandomDataSpout.class);
+    private static final Log log = LogFactory.getLog(RandomDataSpout.class);
 
     private SpoutOutputCollector _collector;
     private final int _interval;
@@ -41,6 +41,7 @@ public class RandomDataSpout extends BaseRichSpout {
         log.info("ack file " + id);
 
     }
+
     @Override
     public void nextTuple() {
         _collector.emit(new Values(UUID.randomUUID().toString()), UUID.randomUUID().toString());

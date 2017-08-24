@@ -5,6 +5,8 @@ import backtype.storm.task.TopologyContext;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import storm.trident.operation.TridentCollector;
 import storm.trident.spout.IBatchSpout;
 
@@ -14,16 +16,18 @@ import java.text.SimpleDateFormat;
 import java.util.Map;
 import java.util.Random;
 
-@SuppressWarnings({ "serial", "rawtypes" })
+@SuppressWarnings({"serial", "rawtypes"})
 public class FakeTweetsBatchSpout implements IBatchSpout {
+
+    private static final Log log = LogFactory.getLog(FakeTweetsBatchSpout.class);
 
     private int batchSize;
 
-    public final static String[] ACTORS = { "stefan", "dave", "pere", "nathan", "doug", "ted", "mary",
-            "rose" };
-    public final static String[] LOCATIONS = { "Spain", "USA", "Spain", "USA", "USA", "USA", "UK",
-            "France" };
-    public final static String[] SUBJECTS = { "berlin", "justinbieber", "hadoop", "life", "bigdata" };
+    public final static String[] ACTORS = {"stefan", "dave", "pere", "nathan", "doug", "ted", "mary",
+            "rose"};
+    public final static String[] LOCATIONS = {"Spain", "USA", "Spain", "USA", "USA", "USA", "UK",
+            "France"};
+    public final static String[] SUBJECTS = {"berlin", "justinbieber", "hadoop", "life", "bigdata"};
 
     private double[] activityDistribution;
     private double[][] subjectInterestDistribution;
@@ -50,14 +54,14 @@ public class FakeTweetsBatchSpout implements IBatchSpout {
         try {
             sentences = (String[]) IOUtils.readLines(
                     ClassLoader.getSystemClassLoader().getResourceAsStream("500_sentences_en.txt")).toArray(new String[0]);
-        } catch(IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         // will define which actors are more proactive than the others
         this.activityDistribution = getProbabilityDistribution(ACTORS.length, randomGenerator);
         // will define what subjects each of the actors are most interested in
         this.subjectInterestDistribution = new double[ACTORS.length][];
-        for(int i = 0; i < ACTORS.length; i++) {
+        for (int i = 0; i < ACTORS.length; i++) {
             this.subjectInterestDistribution[i] = getProbabilityDistribution(SUBJECTS.length, randomGenerator);
         }
     }
@@ -65,7 +69,7 @@ public class FakeTweetsBatchSpout implements IBatchSpout {
     @Override
     public void emitBatch(long batchId, TridentCollector collector) {
         // emit batchSize fake tweets
-        for(int i = 0; i < batchSize; i++) {
+        for (int i = 0; i < batchSize; i++) {
             collector.emit(getNextTweet());
         }
     }
@@ -91,7 +95,9 @@ public class FakeTweetsBatchSpout implements IBatchSpout {
         return new Fields("id", "text", "actor", "location", "date");
     }
 
-    // --- Helper methods --- //
+    /**
+     * Helper methods
+     */
     // SimpleDateFormat is not thread safe!
     private SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aa");
 
@@ -111,12 +117,12 @@ public class FakeTweetsBatchSpout implements IBatchSpout {
     private static double[] getProbabilityDistribution(int n, Random randomGenerator) {
         double a[] = new double[n];
         double s = 0.0d;
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             a[i] = 1.0d - randomGenerator.nextDouble();
             a[i] = -1 * Math.log(a[i]);
             s += a[i];
         }
-        for(int i = 0; i < n; i++) {
+        for (int i = 0; i < n; i++) {
             a[i] /= s;
         }
         return a;
@@ -126,7 +132,7 @@ public class FakeTweetsBatchSpout implements IBatchSpout {
         double rnd = randomGenerator.nextDouble();
         double accum = 0;
         int index = 0;
-        for(; index < distribution.length && accum < rnd; index++, accum += distribution[index - 1])
+        for (; index < distribution.length && accum < rnd; index++, accum += distribution[index - 1])
             ;
         return index - 1;
     }
@@ -134,7 +140,7 @@ public class FakeTweetsBatchSpout implements IBatchSpout {
     public static void main(String[] args) throws IOException, ParseException {
         FakeTweetsBatchSpout spout = new FakeTweetsBatchSpout();
         spout.open(null, null);
-        for(int i = 0; i < 30; i++)
-            System.out.println(spout.getNextTweet());
+        for (int i = 0; i < 30; i++)
+            log.info(spout.getNextTweet());
     }
 }

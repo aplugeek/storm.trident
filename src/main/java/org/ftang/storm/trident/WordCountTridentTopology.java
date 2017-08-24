@@ -1,5 +1,7 @@
 package org.ftang.storm.trident;
 
+import backtype.storm.Config;
+import backtype.storm.LocalCluster;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
 import storm.trident.TridentState;
@@ -13,6 +15,7 @@ import storm.trident.tuple.TridentTuple;
 
 /**
  * @author mcl
+ * modify by jerry.R
  */
 public class WordCountTridentTopology {
 
@@ -25,18 +28,30 @@ public class WordCountTridentTopology {
         spout.setCycle(true);
 
         TridentTopology topology = new TridentTopology();
+        //persistence Topology status
         TridentState wordCounts =
                 topology.newStream("spout1", spout)
                         .each(new Fields("sentence"), new Split(), new Fields("word"))
                         .groupBy(new Fields("word"))
                         .persistentAggregate(new MemoryMapState.Factory(), new Count(), new Fields("count"))
                         .parallelismHint(6);
+        topology.newStream("spout2", spout)
+                .each(new Fields("sentence"), new Utils.PrintFilter());
+        Config conf = new Config();
+        conf.setNumWorkers(2);
+        conf.setNumAckers(1);
+        conf.setDebug(false);
+
+        LocalCluster localCluster = new LocalCluster();
+        localCluster.submitTopology("TestTopology", conf, topology.build());
+
+
     }
 
     public static class Split extends BaseFunction {
         public void execute(TridentTuple tuple, TridentCollector collector) {
             String sentence = tuple.getString(0);
-            for(String word: sentence.split(" ")) {
+            for (String word : sentence.split(" ")) {
                 collector.emit(new Values(word));
             }
         }

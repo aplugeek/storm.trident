@@ -11,12 +11,13 @@ public class Utils {
     /**
      * A filter that filters nothing but prints the tuples it sees. Useful to test and debug things.
      */
-    @SuppressWarnings({ "serial", "rawtypes" })
+    @SuppressWarnings({"serial", "rawtypes"})
     public static class PrintFilter implements Filter {
 
         @Override
         public void prepare(Map conf, TridentOperationContext context) {
         }
+
         @Override
         public void cleanup() {
         }
@@ -43,9 +44,10 @@ public class Utils {
             }
         });
         Map<String, Integer> toReturn = new HashMap<String, Integer>();
-        for(Map.Entry<String, Integer> entry: entryList.subList(0, Math.min(entryList.size(), n))) {
+        for (Map.Entry<String, Integer> entry : entryList.subList(0, Math.min(entryList.size(), n))) {
             toReturn.put(entry.getKey(), entry.getValue());
         }
         return toReturn;
     }
+
 }
